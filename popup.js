@@ -64,8 +64,10 @@ function setForm(data) {
     $('#tag').val(settings.domain.split('.')[0]);
   }
   //settingsform
-  var num = 16;
-  if(typeof data[settings.domain] !== 'undefined' && typeof data[settings.domain].cfg !== 'undefined' ) {
+  if(typeof data[settings.domain] !== 'undefined' && typeof data[settings.domain].cfg === 'undefined' ) {
+    data[settings.domain].cfg = 'dpm16';
+  }
+  if(typeof data[settings.domain] !== 'undefined' && typeof data[settings.domain].cfg !== 'undefined') {
     num = data[settings.domain].cfg.replace( /^\D+/g, '');
     elements = document.querySelectorAll("input");
     for(var i = 0, element; element = elements[i]; i++) { 
