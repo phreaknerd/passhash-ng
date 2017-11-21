@@ -101,10 +101,12 @@ $(function(){
   $('#unmask').on('click', function(e){
     if($(this).prop('checked')) {
       $('#key').attr('type', 'text');
+      $('#hash').attr('type', 'text');
       $('.hint').hide();
     }
     else {
       $('#key').attr('type', 'password');
+      $('#hash').attr('type', 'password');
       $('.hint').show();
     }
   });
