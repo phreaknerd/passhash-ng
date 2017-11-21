@@ -1,8 +1,8 @@
 {
 
   "manifest_version": 2,
-  "name": "Passhash NG",
-  "version": "1.0",
+  "name": "Password Hasher NG",
+  "version": "0.1",
 
   "applications": {
     "gecko": {
@@ -10,7 +10,7 @@
     }
   },
 
-  "description": "Hashing password the secure way.",
+  "description": "Implementation of the Password Hasher extension for the new Webextension API",
 
   "permissions": [
     "activeTab",
@@ -24,6 +24,10 @@
 
   "background": {
     "scripts": ["background.js"]
+  },
+
+  "options_ui": {
+      "page": "options.html"
   },
 
   "content_scripts": [

@@ -1,0 +1,32 @@
+.form-group ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.form-group li {
+  padding:0;
+  margin:0; 
+}
+
+.form-group.radio {
+  width: 100px;
+}
+.form-group.radio label {
+  display: inline-block;
+  width: 20px;
+  text-align: right
+}
+.form-group.radio li {
+  display: inline;
+  width: 50px;
+  margin-right: 5px;
+}
+.actions input {
+  width: 100px;
+}
+.requirements, .restrictions {
+  width: 300px;
+}
+.col {
+  float: left;
+}
