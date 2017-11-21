@@ -35,3 +35,19 @@ function listener(p) {
 }
 
 browser.runtime.onConnect.addListener(listener);
+
+
+browser.contextMenus.create({
+  id: "passhash-hasher",
+  title: "Password Hasher NG",
+  contexts: ["password"]
+});
+
+
+browser.contextMenus.onClicked.addListener(function(info, tab) {
+  switch (info.menuItemId) {
+    case "passhash-hasher":
+      port_content.postMessage({action: 'getconfig'}); 
+      break;
+  }
+});

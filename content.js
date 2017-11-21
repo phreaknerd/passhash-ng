@@ -1,3 +1,4 @@
+var pwditem;
 var port = browser.runtime.connect(
   { name: 'passhash-content'}
 );
@@ -6,6 +7,9 @@ port.onMessage.addListener(function(m){
   if(m.action == 'sethash') {
     $('#' + m.id).val(m.hash);
     $('#' + m.id).trigger('change');
+  }
+  else if(m.action == 'getconfig') {
+    port.postMessage({action: 'openpopup', id: pwditem.id, domain: window.location.hostname});
   }
 });
 
@@ -33,6 +37,9 @@ $(function(){
       port.postMessage({action: 'openpopup', id: input_id, domain: window.location.hostname});
     }); 
     $(this).before($pwdbtn);
+    $(this).on('contextmenu', function(e){
+      pwditem = $(this);
+    });
     i++;
   })
 });
