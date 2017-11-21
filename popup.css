@@ -17,7 +17,8 @@ label {
 }
 
 #bump, #options, #cancel, #ok {
-  width: 100px;
+  width: 120px;
+  text-align: center;
 }
 
 .row {
@@ -25,7 +26,9 @@ label {
 }
 
 .btn-right {
+  clear: both; 
   padding-left: 100px;
+  margin-top: 10px;
 }
 
 .settings.hidden {
@@ -50,4 +53,42 @@ form {
 	font-size: 10px;
 	width: 13px;
 	text-align: right;
+}
+
+.form-group h2 {
+  font-size: 16px;
+}
+.form-group ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.form-group li {
+  padding:0;
+  margin:0; 
+}
+.form-group label {
+  width: auto;
+}
+.form-group.radio {
+  width: 100px;
+}
+.form-group.radio label {
+  display: inline-block;
+  width: 20px;
+  text-align: right
+}
+.form-group.radio li {
+  display: inline;
+  width: 50px;
+  margin-right: 5px;
+}
+.actions input {
+  width: 100px;
+}
+.requirements, .restrictions {
+  width: 300px;
+}
+.col {
+  float: left;
 }
