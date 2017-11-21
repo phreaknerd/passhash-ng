@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <title>Password Hasher NG</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="popup.css"/>
+  </head>
+
+<body>
+  <div class="loader">Loading...</div>
+  <form>
+    <div class="row">
+      <label for="tag">Sitetag</label><input type="text" id="tag" value="" /> <input type="button" value="Bump" id="bump" name="bump"/>
+    </div>
+    <div class="row">
+      <label for="key">Masterkey</label><div class="hint">$$</div><input type="password" id="key" value="" /> <input type="checkbox" id="unmask"><label class="checkboxlabel" for="unmask">Unmask</label>
+    </div>
+    <div class="row">
+      <label for="hash">Hashword</label><input type="text" id="hash" value="" /> <input type="button" value="Options &gt;" id="options" />
+    </div>
+    <div class="row settings hidden">SETTINGS</div>
+    <div class="row btn-right">
+      <input type="button" id="cancel" value="Cancel"> <input type="button" id="ok" value="OK">
+    </div>
+  </form>
+  <script src="jquery-3.2.1.min.js"></script>
+  <script src="passhash-sha1.js"></script>
+  <script src="passhash-common.js"></script>
+  <script src="popup.js"></script>
+</body>
+
+</html>

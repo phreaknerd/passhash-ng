@@ -1,0 +1,36 @@
+{
+
+  "manifest_version": 2,
+  "name": "Passhash NG",
+  "version": "1.0",
+
+  "applications": {
+    "gecko": {
+      "id": "passhash-ng@cnielsen.de"
+    }
+  },
+
+  "description": "Hashing password the secure way.",
+
+  "permissions": [
+    "activeTab",
+    "notifications",
+    "storage"
+  ],
+
+  "icons": {
+    "48": "icons/logo.png"
+  },
+
+  "background": {
+    "scripts": ["background.js"]
+  },
+
+  "content_scripts": [
+    {
+      "matches": ["*://*/*"],
+      "js": ["jquery-3.2.1.min.js", "content.js"]
+    }
+  ]
+
+}
