@@ -1,4 +1,3 @@
-var pwditem;
 var port = browser.runtime.connect(
   { name: 'passhash-content'}
 );
@@ -38,7 +37,7 @@ $(function(){
     }); 
     $(this).before($pwdbtn);
     $(this).on('contextmenu', function(e){
-      pwditem = $(this);
+      port.postMessage({action: 'setid', id: $(this)[0].id, domain: window.location.hostname});
     });
     i++;
   })
