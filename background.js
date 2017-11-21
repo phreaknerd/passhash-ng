@@ -11,13 +11,11 @@ function listener(p) {
       if(m.action == 'openpopup') {
         settings.id = m.id;
         settings.domain = m.domain;
-        popup_win = browser.windows.create({
-          "type": "panel",
-          "height": 200,
-          "width": 450,
-          "url": browser.extension.getURL("popup.html"),
-          "allowScriptsToClose": true
-        });
+        openPopup();
+      }
+      else if (m.action == 'setid'){
+        settings.id = m.id;
+        settings.domain = m.domain;
       }
     });
   }
@@ -34,6 +32,16 @@ function listener(p) {
   }
 }
 
+function openPopup() {
+  popup_win = browser.windows.create({
+    "type": "panel",
+    "height": 200,
+    "width": 450,
+    "url": browser.extension.getURL("popup.html"),
+    "allowScriptsToClose": true
+  });
+}
+
 browser.runtime.onConnect.addListener(listener);
 
 
@@ -47,7 +55,7 @@ browser.contextMenus.create({
 browser.contextMenus.onClicked.addListener(function(info, tab) {
   switch (info.menuItemId) {
     case "passhash-hasher":
-      port_content.postMessage({action: 'getconfig'}); 
+      openPopup(); 
       break;
   }
 });
