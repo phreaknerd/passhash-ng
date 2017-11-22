@@ -9,10 +9,10 @@ An updated version of the classic Password Hasher iadd-on compatible with the ne
 ## Usage
 1. Open a login page with a password field
 2. To open the hasher do one of the following:
-  a) Click on the password-hasher-icon in the address-field of your browser
-  b) Use the keyboard-shortcut Ctrl-F6
-  c) Click on the "#"-symbol in the password-field
-  d) Use the right-click contexctmenu on the password field to open password-hasher
+  * Click on the password-hasher-icon in the address-field of your browser
+  * Use the keyboard-shortcut Ctrl-F6
+  * Click on the "#"-symbol in the password-field
+  * Use the right-click contexctmenu on the password field to open password-hasher
 3. Enter your master-key
 4. Click ok or enter: Done!
 
@@ -36,4 +36,4 @@ master-key: password
 resulting hash: 0"Ajd0PqrldvYjeA
 ```
 Bam. Different passwords for every site. You only have to remeber your master-key which is never stored anywhere.
- 
+
