@@ -7,15 +7,26 @@ var storage = browser.storage.local;
 function listener(p) {
   if(p.name == 'passhash-content') {
     port_content = p;
-    port_content.onMessage.addListener(function(m){
+    port_content.onMessage.addListener(function(m, sender){
       if(m.action == 'openpopup') {
         settings.id = m.id;
         settings.domain = m.domain;
         openPopup();
       }
-      else if (m.action == 'setid'){
+      else if (m.action == 'setid') {
         settings.id = m.id;
         settings.domain = m.domain;
+        console.log(settings);
+      }
+      else if (m.action == 'enablePageAction') {
+        settings.id = m.id;
+        settings.domain = m.domain;
+        browser.pageAction.show(sender.sender.tab.id);
+      }
+      else if (m.action == 'disablePageAction') {
+        settings.id = '';
+        settings.domain = '';
+        browser.pageAction.hide(sender.sender.tab.id);
       }
     });
   }
@@ -40,6 +51,13 @@ function openPopup() {
     "url": browser.extension.getURL("popup.html"),
     "allowScriptsToClose": true
   });
+  //hack: the new firefox is showing a blank popup.
+  popup_win.then(function(info){
+    browser.windows.update(info.id, {
+      "width": 451
+    });
+  });
+
 }
 
 browser.runtime.onConnect.addListener(listener);
@@ -47,7 +65,7 @@ browser.runtime.onConnect.addListener(listener);
 
 browser.contextMenus.create({
   id: "passhash-hasher",
-  title: "Password Hasher NG",
+  title: "Hash password",
   contexts: ["password"]
 });
 
@@ -57,5 +75,11 @@ browser.contextMenus.onClicked.addListener(function(info, tab) {
     case "passhash-hasher":
       openPopup(); 
       break;
+  }
+});
+
+browser.commands.onCommand.addListener(function(command) {
+  if (command == "toggle-hasher") {
+    console.log("toggling the hasher!");
   }
 });

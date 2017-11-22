@@ -38,9 +38,10 @@ label {
   width: 100%;
   text-align: center;
   padding-top: 100px;
+  display: none;
 }
 form {
-  display:none;
+  /*display:none;*/
 }
 .hint {
 	position: absolute;

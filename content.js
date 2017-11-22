@@ -14,6 +14,12 @@ port.onMessage.addListener(function(m){
 
 $(function(){
   var i = 0;
+  if($('input[type=password]').length) {
+    port.postMessage({action: 'enablePageAction', id: $('input[type=password]')[0].id, domain: window.location.hostname});
+  }
+  else {
+    port.postMessage({action: 'disablePageAction', id: '', domain: ''});
+  }
   $('input[type=password]').each(function(i){
     var input_id = $(this)[0].id;
     var $pwdbtn = $('<div></div>', {'id': 'pwdbtn-' + i, 'class': 'pwdbtn'});

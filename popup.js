@@ -4,11 +4,9 @@ var storage = browser.storage.local;
 port = browser.runtime.connect({name: 'passhash-popup'});
 
 function saveSettings(name, data) {
-  $('.loader').show().html('Saving...');
-  $('form').hide();
   storage.set({[name]: data}).then(
     function(val) {
-      port.postMessage({action: 'sethash', hash: $('#hash').val(), sitetag: $('#tag').val(), config: '16dpm'});
+      port.postMessage({action: 'sethash', hash: $('#hash').val()});
     }, 
     function(val) {
       alert('Error!');
@@ -92,6 +90,7 @@ function setForm(data) {
 }
 
 $(function(){
+  $('#key').focus();
   $('#cancel').on('click', function(e){
     window.close();
   });
@@ -113,26 +112,13 @@ $(function(){
   $('#options').on('click', function(e){
     if($('.settings').hasClass('hidden')){
       $('.settings').removeClass('hidden');
-      browser.windows.getCurrent().then((currentWindow) => {
-        var updateInfo = {
-          height: 400
-        };
-        browser.windows.update(currentWindow.id, updateInfo);
         $('.settings').show();
         $('#options').val('Options <<');
-      });
     }
     else {
       $('.settings').addClass('hidden');
-      browser.windows.getCurrent().then((currentWindow) => {
-        var updateInfo = {
-          height: 200
-        };
-        browser.windows.update(currentWindow.id, updateInfo);
         $('.settings').hide();
         $('#options').val('Options >>');
-      });
-
     }
   });
   $('input').on('input change', function(e) {
@@ -149,21 +135,11 @@ $(function(){
       $('.hint').html(PassHashCommon.generateHashWord($('#key').val(), $('#key').val(), 2, true, false, true, false, false));
     }
   });
-  $('#ok').on('click', function(e){
+  $('form').on('submit', function(e){
+    e.preventDefault();
     saveSettings(settings.domain, {
       tag: $('#tag').val(),
       cfg: generateConfig() 
     });
   });
 });
-
-//hack: firefox is showing a blank screen onload of panel
-browser.windows.getCurrent().then((currentWindow) => {
-  var updateInfo = {
-    height: 201 
-  };
-  browser.windows.update(currentWindow.id, updateInfo);
-});
-
-
-
