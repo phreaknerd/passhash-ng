@@ -8,6 +8,7 @@ var settings = {
   id: '',
   popup: 0,
   fieldmarker: 1,
+  fieldmarkerhighlight: 1,
   unmasker: 1,
   fulldomain: 0 
 };
@@ -39,12 +40,12 @@ function listener(p) {
             settings.tag = settings.domain.split('.')[0];
           }
         }
-        port_content.postMessage({action: 'init', fieldmarker: settings.fieldmarker});
+        port_content.postMessage({action: 'init', fieldmarker: settings.fieldmarker, fieldmarkerhighlight: settings.fieldmarkerhighlight});
       }, 
       function(data) {
         console.log('Could not load extension settings from storage. Running with defaults.');
         console.log(data);
-        port_content.postMessage({action: 'init', fieldmarker: settings.fieldmarker});
+        port_content.postMessage({action: 'init', fieldmarker: settings.fieldmarker, fieldmarkerhighlight: settings.fieldmarkerhighlight});
       }
     );
     port_content.onMessage.addListener(function(m, sender){

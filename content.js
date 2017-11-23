@@ -2,6 +2,7 @@ var port = browser.runtime.connect(
   { name: 'passhash-content' }
 );
 var fieldmarker = 1;
+var fieldmarkerhighlight = 1;
 
 port.onMessage.addListener(function(m){
   if(m.action == 'sethash') {
@@ -9,7 +10,9 @@ port.onMessage.addListener(function(m){
     $('#' + m.id).trigger('change');
   }
   else if(m.action == 'init') {
+    console.log(m);
     fieldmarker = m.fieldmarker;
+    fieldmarkerhighlight = m.fieldmarkerhighlight;
     var i = 0;
     if($('input[type=password]').length) {
       port.postMessage({action: 'enablePageAction', id: $('input[type=password]')[0].id});
@@ -18,21 +21,27 @@ port.onMessage.addListener(function(m){
       if(fieldmarker == 1) {
         var input_id = $(this)[0].id;
         var $pwdbtn = $('<div></div>', {'id': 'pwdbtn-' + i, 'class': 'pwdbtn'});
-
         $pwdbtn.html(' # ');
         $pwdbtn.css({
           'position': 'absolute',
           'width': '20px',
           'font-size': $(this).css('font-size'),
           'font-weight': 'bold',
-          'padding-top': $(this).css('padding-top'),
+          'padding': '5px',
           'margin-left': $(this).width()-5 + 'px',
           'text-align': 'center',
-          'height': $(this).height(),
           'color': $(this).css('color'),
           'cursor': 'pointer',
           'z-index': 1000
         });
+        if(fieldmarkerhighlight == 1) {
+          $pwdbtn.css({
+            'border': 'thin solid #80c080',
+            'background-color': '#eeffee',
+            'margin-left': $(this).width()+30 + 'px',
+            'color': '#609060'
+          });
+        }
         $pwdbtn.on('click', function(e) {
           port.postMessage({action: 'openPopup', id: input_id});
         }); 

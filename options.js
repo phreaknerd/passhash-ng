@@ -15,7 +15,8 @@ function saveOptions(e) {
       hint: document.querySelector("#hint").checked == true ? 1 : 0,
       fulldomain: document.querySelector("#fulldomain").checked == true ? 1 : 0,
       unmasker: document.querySelector("#unmasker").checked == true ? 1 : 0,
-      fieldmarker: document.querySelector("#fieldmarker").checked == true ? 1 : 0
+      fieldmarker: document.querySelector("#fieldmarker").checked == true ? 1 : 0,
+      fieldmarkerhighlight: document.querySelector("#fieldmarker-highlight").checked == true ? 1 : 0
     }
   }).then(function(){}, onError);
 
@@ -43,16 +44,19 @@ function restoreOptions() {
         }
       }
       if(typeof result.passhashng.hint !== 'undefined' ) {
-        document.querySelector("input#hint").checked = result.passhashng.hint == 1 ? true : false;
+        document.querySelector("#hint").checked = result.passhashng.hint == 1 ? true : false;
       }
       if(typeof result.passhashng.fulldomain !== 'undefined' ) {
-        document.querySelector("input#fulldomain").checked = result.passhashng.fulldomain == 1 ? true : false;
+        document.querySelector("#fulldomain").checked = result.passhashng.fulldomain == 1 ? true : false;
       }
       if(typeof result.passhashng.fieldmarker !== 'undefined' ) {
-        document.querySelector("input#fieldmarker").checked = result.passhashng.fieldmarker == 1 ? true : false;
+        document.querySelector("#fieldmarker").checked = result.passhashng.fieldmarker == 1 ? true : false;
       }
+      if(typeof result.passhashng.fieldmarkerhighlight !== 'undefined' ) {
+        document.querySelector("#fieldmarker-highlight").checked = result.passhashng.fieldmarkerhighlight == 1 ? true : false;
+      } 
       if(typeof result.passhashng.unmasker !== 'undefined' ) {
-        document.querySelector("input#unmasker").checked = result.passhashng.unmasker == 1 ? true : false;
+        document.querySelector("#unmasker").checked = result.passhashng.unmasker == 1 ? true : false;
       }
     }
   }
