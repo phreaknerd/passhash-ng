@@ -6,7 +6,11 @@ var settings = {
   hint: 1,
   domain: '',
   id: '',
-  popup: 0,};
+  popup: 0,
+  fieldmarker: 1,
+  unmasker: 1,
+  fulldomain: 0 
+};
 var storage = browser.storage.sync;
 var popupsettings = {
   "type": "panel",
@@ -28,12 +32,19 @@ function listener(p) {
         }
         if(port_content.sender != 'undefined' && port_content.sender.url != 'undefined') {
           settings.domain = parseurl(port_content.sender.url);
-          settings.tag = settings.domain.split('.')[0];
+          if(typeof settings.fulldomain != 'undefined' && settings.fulldomain == 1) {
+            settings.tag = settings.domain;
+          }
+          else {
+            settings.tag = settings.domain.split('.')[0];
+          }
         }
+        port_content.postMessage({action: 'init', fieldmarker: settings.fieldmarker});
       }, 
       function(data) {
         console.log('Could not load extension settings from storage. Running with defaults.');
         console.log(data);
+        port_content.postMessage({action: 'init', fieldmarker: settings.fieldmarker});
       }
     );
     port_content.onMessage.addListener(function(m, sender){
@@ -49,7 +60,6 @@ function listener(p) {
         browser.pageAction.show(sender.sender.tab.id);
       }
     });
-    port_content.postMessage({action: 'init'});
   }
   else if(p.name == 'passhash-popup'){
     port_popup = p;

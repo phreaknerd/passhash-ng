@@ -10,7 +10,13 @@
 <body>
   <form>
     <h2>Userinterface</h2>
-    <p>Adjust the appearence and functionality of the popup.</p>
+    <p>Adjust the appearance and functionality of the popup.</p>
+    <div class="form-group">
+      <input type="checkbox" checked="true" id="fieldmarker" value="1"/><label for="hint">Show a clickable field marker near password-fields.</label>
+    </div>
+    <div class="form-group">
+      <input type="checkbox" checked="true" id="unmasker" value="1"/><label for="hint">Show an unmasking-option in the hasher-form.</label>
+    </div>
     <div class="form-group">
       <input type="checkbox" checked="true" id="hint" value="1"/><label for="hint">Show master-key hint in form-field</label>
       <p>The master-key-hint shows you a two character hash of your master-key in the input field. With this you can see if you typed your key correctly without having to unmasking it.</p>
@@ -23,6 +29,9 @@
     <h2>Hashing</h2>
     <p>These settings define how your passwords are hashed on a new site by default. This will only affect new sites on the first login.<br/>
     Some sites are quite restrictive about which passwords are valid, so you can always adjust those settings per site in the hasher dialog. The changed values will be reloaded on your next visit.</p>
+    <div class="form-group">
+      <input type="checkbox" id="fulldomain" value="1"/><label for="hint">Guess full domain as site-tag.</label>
+    </div>
     <div class="col">
     <div class="form-group checkboxes requirements">
       <h3>Requirements</h3>

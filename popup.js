@@ -15,8 +15,8 @@ function generateConfig(e) {
 
 function listener(m) {
   if(m.action == 'init') {
-    port.postMessage({action: 'resetPopup'});
     settings = m.settings;
+    port.postMessage({action: 'resetPopup'});
     $('#tag').val(settings.tag);
     var num = settings.cfg.replace( /^\D+/g, '');
     var elements = document.querySelectorAll("input");
@@ -28,8 +28,12 @@ function listener(m) {
         element.checked =settings.cfg.indexOf(element.value) != -1 ? true : false;
       }
     }
-    if(settings.hint == 0){
-      $('#hint').hide();
+    if(settings.hint == 1){
+      $('#hint').removeClass('hidden');
+    }
+    if(settings.unmasker == 1){
+      $('#unmask').removeClass('hidden');
+      $('.unmasklabel').removeClass('hidden');
     }
     $('#key').focus();
     $('#cancel').on('click', function(e){

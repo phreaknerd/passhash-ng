@@ -12,7 +12,10 @@ function saveOptions(e) {
   storage.set({
     passhashng: { 
       cfg: cfg,
-      hint: document.querySelector("#hint").checked == true ? 1 : 0
+      hint: document.querySelector("#hint").checked == true ? 1 : 0,
+      fulldomain: document.querySelector("#fulldomain").checked == true ? 1 : 0,
+      unmasker: document.querySelector("#unmasker").checked == true ? 1 : 0,
+      fieldmarker: document.querySelector("#fieldmarker").checked == true ? 1 : 0
     }
   }).then(function(){}, onError);
 
@@ -41,6 +44,15 @@ function restoreOptions() {
       }
       if(typeof result.passhashng.hint !== 'undefined' ) {
         document.querySelector("input#hint").checked = result.passhashng.hint == 1 ? true : false;
+      }
+      if(typeof result.passhashng.fulldomain !== 'undefined' ) {
+        document.querySelector("input#fulldomain").checked = result.passhashng.fulldomain == 1 ? true : false;
+      }
+      if(typeof result.passhashng.fieldmarker !== 'undefined' ) {
+        document.querySelector("input#fieldmarker").checked = result.passhashng.fieldmarker == 1 ? true : false;
+      }
+      if(typeof result.passhashng.unmasker !== 'undefined' ) {
+        document.querySelector("input#unmasker").checked = result.passhashng.unmasker == 1 ? true : false;
       }
     }
   }

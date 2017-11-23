@@ -55,7 +55,9 @@ form {
 	width: 13px;
 	text-align: right;
 }
-
+.hidden {
+  display: none;
+}
 .form-group h2 {
   font-size: 16px;
 }
