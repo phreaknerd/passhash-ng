@@ -15,6 +15,7 @@ function generateConfig(e) {
 
 function listener(m) {
   if(m.action == 'init') {
+    port.postMessage({action: 'resetPopup'});
     settings = m.settings;
     $('#tag').val(settings.tag);
     var num = settings.cfg.replace( /^\D+/g, '');
@@ -54,11 +55,21 @@ function listener(m) {
         $('.settings').removeClass('hidden');
           $('.settings').show();
           $('#options').val('Options <<');
+          if(settings.popup == 1) {
+            browser.windows.getCurrent().then((currentWindow) => {
+              browser.windows.update(currentWindow.id, { height: 400 });
+            });
+          }
       }
       else {
         $('.settings').addClass('hidden');
-          $('.settings').hide();
-          $('#options').val('Options >>');
+        $('.settings').hide();
+        $('#options').val('Options >>');
+        if(settings.popup == 1) {
+          browser.windows.getCurrent().then((currentWindow) => {
+            browser.windows.update(currentWindow.id, { height: 200 });
+          });
+        }
       }
     });
     $('input').on('input change', function(e) {

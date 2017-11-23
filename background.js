@@ -5,8 +5,8 @@ var settings = {
   cfg: 'dpm16',
   hint: 1,
   domain: '',
-  id: ''
-};
+  id: '',
+  popup: 0,};
 var storage = browser.storage.sync;
 var popupsettings = {
   "type": "panel",
@@ -24,6 +24,7 @@ function listener(p) {
       function(data){
         if(typeof data['passhashng'] != 'undefined') {
           settings = data['passhashng'];
+          settings.popup = 0;
         }
         if(port_content.sender != 'undefined' && port_content.sender.url != 'undefined') {
           settings.domain = parseurl(port_content.sender.url);
@@ -63,6 +64,9 @@ function listener(p) {
           cfg: settings.cfg
         }});
       }
+      else if (m.action == 'resetPopup') {
+        settings.popup = 0;
+      }
     });
     storage.get(settings.domain).then(
       function(data){
@@ -82,7 +86,8 @@ function listener(p) {
 }
 
 function openPopup() {
-   popup_win = browser.windows.create(popupsettings).then(popuphack);
+  settings.popup = 1;
+  popup_win = browser.windows.create(popupsettings).then(popuphack);
 }
 
 //hack: the new firefox is showing a blank popup.
