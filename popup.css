@@ -43,7 +43,7 @@ label {
 form {
   /*display:none;*/
 }
-.hint {
+#hint {
 	position: absolute;
 	margin-left: 142px;
 	display: inline-block;

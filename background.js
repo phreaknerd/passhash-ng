@@ -67,7 +67,6 @@ function listener(p) {
     storage.get(settings.domain).then(
       function(data){
         if(typeof data[settings.domain] != 'undefined') {
-          console.log(data[settings.domain]);
           settings.cfg = data[settings.domain].cfg;
           settings.tag = data[settings.domain].tag;
         }
