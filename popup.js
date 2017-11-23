@@ -27,7 +27,6 @@ function listener(m) {
         element.checked =settings.cfg.indexOf(element.value) != -1 ? true : false;
       }
     }
-    console.log(settings);
     if(settings.hint == 0){
       $('#hint').hide();
     }
