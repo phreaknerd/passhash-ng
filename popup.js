@@ -73,7 +73,7 @@ function listener(m) {
       var restrictDigits = ( cfg.indexOf('g') != -1 ? true : false );
       if($('#key').val() && $('#tag').val()) {
         $('#hash').val(PassHashCommon.generateHashWord($('#tag').val(), $('#key').val(), hashWordSize, requireDigit, requirePunctuation, requireMixedCase, restrictSpecial, restrictDigits));
-        $('.hint').html(PassHashCommon.generateHashWord($('#key').val(), $('#key').val(), 2, true, false, true, false, false));
+        $('#hint').html(PassHashCommon.generateHashWord($('#key').val(), $('#key').val(), 2, true, false, true, false, false));
       }
     });
     $('form').on('submit', function(e){
