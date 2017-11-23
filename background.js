@@ -7,7 +7,7 @@ var settings = {
   domain: '',
   id: ''
 };
-var storage = browser.storage.local;
+var storage = browser.storage.sync;
 var popupsettings = {
   "type": "panel",
   "height": 200,

@@ -1,6 +1,5 @@
 var port;
 var settings;
-var storage = browser.storage.local;
 port = browser.runtime.connect({name: 'passhash-popup'});
 
 function generateConfig(e) {

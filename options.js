@@ -1,5 +1,6 @@
 var all_elements;
 var hasher_elements;
+var storage = browser.storage.sync;
 
 function saveOptions(e) {
   var cfg = '';
@@ -8,7 +9,7 @@ function saveOptions(e) {
       cfg += element.value;
     }
   }
-  browser.storage.local.set({
+  storage.set({
     passhashng: { 
       cfg: cfg,
       hint: document.querySelector("#hint").checked == true ? 1 : 0
@@ -31,20 +32,10 @@ function restoreOptions() {
         var elements = document.querySelectorAll("input.hashersetting");
         for(var i = 0, element; element = elements[i]; i++) { 
           if(typeof element.type !== 'undefined' && element.type == 'radio') {
-            if(element.value == num) {
-              element.checked = true;
-            }
-            else {
-              element.checked = false;
-            }
+            element.checked = element.value == num ? true : false;
           }
           else if (typeof element.type !== 'undefined' && element.type == 'checkbox') {
-            if (result.passhashng.cfg.indexOf(element.value) != -1) {
-              element.checked = true;
-            }
-            else {
-              element.checked = false;
-            }
+            element.checked = result.passhashng.cfg.indexOf(element.value) != -1 ? true: false;
           }
         }
       }
@@ -58,7 +49,7 @@ function restoreOptions() {
     console.log(`Error: ${error}`);
   }
 
-  var getting = browser.storage.local.get("passhashng");
+  var getting = storage.get("passhashng");
   getting.then(setCurrentChoice, onError);
 }
 
