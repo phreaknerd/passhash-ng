@@ -79,7 +79,7 @@ function listener(m) {
     $('input').on('input change', function(e) {
       var cfg = generateConfig();
       var hashWordSize = cfg.replace( /^\D+/g, '');
-      var requireDigit = ( cfg.indexOf('d') ? true : false );
+      var requireDigit = ( cfg.indexOf('d') != -1 ? true : false );
       var requirePunctuation = ( cfg.indexOf('p') != -1 ? true : false );
       var requireMixedCase = ( cfg.indexOf('m') != -1 ? true : false );
       var restrictSpecial = ( cfg.indexOf('r') != -1 ? true : false ); 
