@@ -44,16 +44,12 @@ form {
   /*display:none;*/
 }
 #hint {
-	position: absolute;
-	margin-left: 142px;
+  position: absolute;
+  margin: 2px 0px 0px -25px;
 	display: inline-block;
-	margin-top: 5px;
 	color: #666;
-	background-color: #eee;
-	padding: 5px;
-	font-size: 10px;
 	width: 13px;
-	text-align: right;
+	text-align: center;
 }
 .hidden {
   display: none;
