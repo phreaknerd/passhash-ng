@@ -5,7 +5,6 @@ var fieldmarker = 1;
 var fieldmarkerhighlight = 1;
 
 port.onMessage.addListener(function(m){
-  console.log(m); 
   if(m.action == 'sethash') {
     $('#' + m.id).val(m.hash);
     $('#' + m.id).trigger('change');

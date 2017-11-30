@@ -15,7 +15,6 @@ function generateConfig(e) {
 }
 
 function listener(m) {
-  console.log(m);
   if(m.action == 'init') {
     settings = m.settings;
     tabId = m.tabId;

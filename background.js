@@ -26,7 +26,6 @@ var popupsettings = {
 }
 
 function listener(p) {
-  console.log(p);
   if(p.name == 'passhash-content') {
     ports[p.sender.tab.id] = p;
     var url = parseurl(p.sender.tab.url);
@@ -54,18 +53,6 @@ function listener(p) {
       }
     );
 
-    storage.get(parseurl(p.sender.tab.url)).then(
-      function(data){
-        if(typeof data[url] != 'undefined') {
-          localsettings[p.sender.tab.id].cfg = data[parseurl(p.sender.tab.url)].cfg;
-          localsettings[p.sender.tab.id].tag = data[parseurl(p.sender.tab.url)].tag;
-        }
-      }, 
-      function(data) {
-        console.log('Could not load site settings from storage. Running with defaults.');
-        console.log(data);
-      }
-    );
 
     ports[p.sender.tab.id].onMessage.addListener(function(m, sender){
       var tabId = sender.sender.tab.id;
@@ -87,31 +74,44 @@ function listener(p) {
     tabs.then(function(tabInfo){
       var tabId;
       var time = 0;
+      var taburl;
       for (var j = 0; j < tabInfo.length; j++){
         if(tabInfo[j].url.indexOf('http') == 0 && tabInfo[j].lastAccessed > time){
           time = tabInfo[j].lastAccessed;
           tabId = tabInfo[j].id;
+          taburl = tabInfo[j].url;
         }
       }
-      console.log(localsettings);
-      ports[p.sender.contextId].postMessage({action: 'init', settings: localsettings[tabId], tabId: tabId});
-      ports[p.sender.contextId].onMessage.addListener(function(m, sender){
-        if(m.action == 'sethash') {
-          ports[m.tabId].postMessage({action: 'sethash', hash: m.hash, id: settings.id });
-          ports[sender.sender.contextId].postMessage({action: 'close'});
-          var obj = {};
-          obj[localsettings[m.tabId].domain] = {
-            tag: m.tag,
-            cfg: m.cfg
-          };
-          console.log(obj);
-          storage.set(obj);
+      taburl = parseurl(taburl);
+      storage.get(taburl).then(
+        function(data){
+          if(typeof data[taburl] != 'undefined') {
+            localsettings[tabId].cfg = data[taburl].cfg;
+            localsettings[tabId].tag = data[taburl].tag;
+          }
+          ports[p.sender.contextId].postMessage({action: 'init', settings: localsettings[tabId], tabId: tabId});
+          ports[p.sender.contextId].onMessage.addListener(function(m, sender){
+            if(m.action == 'sethash') {
+              ports[m.tabId].postMessage({action: 'sethash', hash: m.hash, id: settings.id });
+              ports[sender.sender.contextId].postMessage({action: 'close'});
+
+              var obj = {};
+              obj[localsettings[m.tabId].domain] = {
+                tag: m.tag,
+                cfg: m.cfg
+              };
+              storage.set(obj);
+            }
+            else if (m.action == 'resetPopup') {
+              settings.popup = 0;
+            }
+          });
+        }, 
+        function(data) {
+          console.log('Could not load site settings from storage. Running with defaults.');
+          console.log(data);
         }
-        else if (m.action == 'resetPopup') {
-          settings.popup = 0;
-        }
-      });
-      console.log(ports);
+      );
     });
   }
 }
