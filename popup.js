@@ -1,5 +1,6 @@
 var port;
 var settings;
+var tabId;
 port = browser.runtime.connect({name: 'passhash-popup'});
 
 function generateConfig(e) {
@@ -14,8 +15,10 @@ function generateConfig(e) {
 }
 
 function listener(m) {
+  console.log(m);
   if(m.action == 'init') {
     settings = m.settings;
+    tabId = m.tabId;
     port.postMessage({action: 'resetPopup'});
     $('#tag').val(settings.tag);
     var num = settings.cfg.replace( /^\D+/g, '');
@@ -95,7 +98,8 @@ function listener(m) {
         action: 'sethash', 
         hash: $('#hash').val(),
         tag: $('#tag').val(),
-        cfg: generateConfig() 
+        cfg: generateConfig(),
+        tabId: tabId
       });
     }); 
   }

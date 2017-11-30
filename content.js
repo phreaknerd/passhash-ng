@@ -5,20 +5,19 @@ var fieldmarker = 1;
 var fieldmarkerhighlight = 1;
 
 port.onMessage.addListener(function(m){
+  console.log(m); 
   if(m.action == 'sethash') {
     $('#' + m.id).val(m.hash);
     $('#' + m.id).trigger('change');
   }
   else if(m.action == 'init') {
-    console.log(m);
     fieldmarker = m.fieldmarker;
     fieldmarkerhighlight = m.fieldmarkerhighlight;
-    var i = 0;
     if($('input[type=password]').length) {
       port.postMessage({action: 'enablePageAction', id: $('input[type=password]')[0].id});
     }
     $('input[type=password]').each(function(i){
-      if(fieldmarker == 1) {
+      if(fieldmarker == 1 && $(this).is(':visible')) {
         var input_id = $(this)[0].id;
         var $pwdbtn = $('<div></div>', {'id': 'pwdbtn-' + i, 'class': 'pwdbtn'});
         $pwdbtn.html(' # ');
@@ -43,12 +42,12 @@ port.onMessage.addListener(function(m){
           });
         }
         $pwdbtn.on('click', function(e) {
-          port.postMessage({action: 'openPopup', id: input_id});
+          port.postMessage({action: 'openPopup', id: input_id, domain: document.location.hostname});
         }); 
         $(this).before($pwdbtn);
       }
       $(this).on('contextmenu', function(e){
-        port.postMessage({action: 'setid', id: $(this)[0].id});
+        port.postMessage({action: 'setid', id: $(this)[0].id, domain: document.location.hostname});
       });
     })
   }

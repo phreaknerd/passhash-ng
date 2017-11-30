@@ -1,6 +1,8 @@
 var port_content;
 var port_popup;
+var ports = {};
 var popup_win;
+var lastdomain;
 var settings = {
   cfg: 'dpm16',
   hint: 1,
@@ -10,8 +12,10 @@ var settings = {
   fieldmarker: 1,
   fieldmarkerhighlight: 1,
   unmasker: 1,
-  fulldomain: 0 
+  fulldomain: 0,
+  loaded: 0
 };
+var localsettings = {};
 var storage = browser.storage.sync;
 var popupsettings = {
   "type": "panel",
@@ -22,77 +26,93 @@ var popupsettings = {
 }
 
 function listener(p) {
-  
+  console.log(p);
   if(p.name == 'passhash-content') {
-    port_content = p;
+    ports[p.sender.tab.id] = p;
+    var url = parseurl(p.sender.tab.url);
+    //load defaults 
     storage.get('passhashng').then(
       function(data){
         if(typeof data['passhashng'] != 'undefined') {
           settings = data['passhashng'];
           settings.popup = 0;
         }
-        if(port_content.sender != 'undefined' && port_content.sender.url != 'undefined') {
-          settings.domain = parseurl(port_content.sender.url);
+        if(p.sender != 'undefined' && p.sender.url != 'undefined') {
+          localsettings[p.sender.tab.id] = settings;
+          localsettings[p.sender.tab.id].domain = url;
+          localsettings[p.sender.tab.id].tag = localsettings[p.sender.tab.id].domain.split('.')[0];
           if(typeof settings.fulldomain != 'undefined' && settings.fulldomain == 1) {
-            settings.tag = settings.domain;
-          }
-          else {
-            settings.tag = settings.domain.split('.')[0];
+            localsettings[p.sender.tab.id].tag = localsettings[p.sender.tab.id].domain;
           }
         }
-        port_content.postMessage({action: 'init', fieldmarker: settings.fieldmarker, fieldmarkerhighlight: settings.fieldmarkerhighlight});
+        ports[p.sender.tab.id].postMessage({action: 'init', fieldmarker: settings.fieldmarker, fieldmarkerhighlight: settings.fieldmarkerhighlight});
       }, 
       function(data) {
         console.log('Could not load extension settings from storage. Running with defaults.');
         console.log(data);
-        port_content.postMessage({action: 'init', fieldmarker: settings.fieldmarker, fieldmarkerhighlight: settings.fieldmarkerhighlight});
+        ports[p.sender.tab.id].postMessage({action: 'init', fieldmarker: settings.fieldmarker, fieldmarkerhighlight: settings.fieldmarkerhighlight});
       }
     );
-    port_content.onMessage.addListener(function(m, sender){
+
+    storage.get(parseurl(p.sender.tab.url)).then(
+      function(data){
+        if(typeof data[url] != 'undefined') {
+          localsettings[p.sender.tab.id].cfg = data[parseurl(p.sender.tab.url)].cfg;
+          localsettings[p.sender.tab.id].tag = data[parseurl(p.sender.tab.url)].tag;
+        }
+      }, 
+      function(data) {
+        console.log('Could not load site settings from storage. Running with defaults.');
+        console.log(data);
+      }
+    );
+
+    ports[p.sender.tab.id].onMessage.addListener(function(m, sender){
+      var tabId = sender.sender.tab.id;
+      localsettings[tabId].id = m.id;
       if(m.action == 'openPopup') {
-        settings.id = m.id;
         openPopup();
       }
       else if (m.action == 'setid') {
-        settings.id = m.id;
+        //done 
       }
       else if (m.action == 'enablePageAction') {
-        settings.id = m.id;
         browser.pageAction.show(sender.sender.tab.id);
       }
     });
   }
   else if(p.name == 'passhash-popup'){
-    port_popup = p;
-    port_popup.onMessage.addListener(function(m){
-      if(m.action == 'sethash') {
-        settings.cfg = m.cfg;
-        settings.tag = m.tag;
-        port_content.postMessage({action: 'sethash', hash: m.hash, id: settings.id });
-        port_popup.postMessage({action: 'close'});
-        storage.set({[settings.domain]: {
-          tag: settings.tag,
-          cfg: settings.cfg
-        }});
-      }
-      else if (m.action == 'resetPopup') {
-        settings.popup = 0;
-      }
-    });
-    storage.get(settings.domain).then(
-      function(data){
-        if(typeof data[settings.domain] != 'undefined') {
-          settings.cfg = data[settings.domain].cfg;
-          settings.tag = data[settings.domain].tag;
+    var tabs = browser.tabs.query({});
+    ports[p.sender.contextId] = p;
+    tabs.then(function(tabInfo){
+      var tabId;
+      var time = 0;
+      for (var j = 0; j < tabInfo.length; j++){
+        if(tabInfo[j].url.indexOf('http') == 0 && tabInfo[j].lastAccessed > time){
+          time = tabInfo[j].lastAccessed;
+          tabId = tabInfo[j].id;
         }
-        port_popup.postMessage({action: 'init', 'settings': settings});
-      }, 
-      function(data) {
-        console.log('Could not load site settings from storage. Running with defaults.');
-        console.log(data);
-        port_popup.postMessage({action: 'init', 'settings': settings});
       }
-    );
+      console.log(localsettings);
+      ports[p.sender.contextId].postMessage({action: 'init', settings: localsettings[tabId], tabId: tabId});
+      ports[p.sender.contextId].onMessage.addListener(function(m, sender){
+        if(m.action == 'sethash') {
+          ports[m.tabId].postMessage({action: 'sethash', hash: m.hash, id: settings.id });
+          ports[sender.sender.contextId].postMessage({action: 'close'});
+          var obj = {};
+          obj[localsettings[m.tabId].domain] = {
+            tag: m.tag,
+            cfg: m.cfg
+          };
+          console.log(obj);
+          storage.set(obj);
+        }
+        else if (m.action == 'resetPopup') {
+          settings.popup = 0;
+        }
+      });
+      console.log(ports);
+    });
   }
 }
 
@@ -125,7 +145,9 @@ browser.contextMenus.create({
 });
 
 
-browser.runtime.onConnect.addListener(listener);
+browser.runtime.onConnect.addListener(function(port) {
+  listener(port);
+});
 
 browser.contextMenus.onClicked.addListener(function(info, tab) {
   switch (info.menuItemId) {
