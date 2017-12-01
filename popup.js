@@ -91,6 +91,11 @@ function listener(m) {
         $('#hint').html(PassHashCommon.generateHashWord($('#key').val(), $('#key').val(), 2, true, false, true, false, false));
       }
     });
+		$(document).keydown(function(e) {
+				if (e.keyCode == 27) {
+						window.close();
+				}
+		});
     $('form').on('submit', function(e){
       e.preventDefault();
       port.postMessage({
