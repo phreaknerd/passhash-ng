@@ -1,9 +1,11 @@
-body {
+html, body {
   background-color: #fff;
   font-family: sans-serif;
   font-size: 14px;
   color: #000;
   padding: 10px;
+  margin: 0;
+  padding: 0;
 }
 
 label {
@@ -23,12 +25,14 @@ label {
 
 .row {
   margin-bottom: 5px;
+  width: 435px;
 }
 
 .btn-right {
   clear: both; 
   padding-left: 100px;
-  margin-top: 10px;
+  padding-top: 10px;
+  width: 250px;
 }
 
 .settings.hidden {
@@ -41,7 +45,8 @@ label {
   display: none;
 }
 form {
-  /*display:none;*/
+  padding: 15px 0px 0px 15px;
+  width: 435px;
 }
 #hint {
   position: absolute;
@@ -90,4 +95,8 @@ form {
 }
 .col {
   float: left;
+  width: 300px;
+}
+.col:last-child {
+  width: 120px;
 }
