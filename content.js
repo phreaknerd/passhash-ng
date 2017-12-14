@@ -6,8 +6,12 @@ var fieldmarkerhighlight = 1;
 
 port.onMessage.addListener(function(m){
   if(m.action == 'sethash') {
-    $('#' + m.id).val(m.hash);
-    $('#' + m.id).trigger('change');
+    var inputs = document.getElementsByTagName('input');
+    for (var i = 0; i < inputs.length; ++i) {
+      if (inputs[i].getAttribute('type') == 'password') {
+         inputs[i].value = m.hash;
+      }
+    }
   }
   else if(m.action == 'init') {
     fieldmarker = m.fieldmarker;

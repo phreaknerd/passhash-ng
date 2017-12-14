@@ -1,6 +1,6 @@
 # Password Hasher NG Firefox extension
 
-An updated version of the classic Password Hasher iadd-on compatible with the new Webextension-API.
+An updated version of the classic Password Hasher add-on compatible with the new Webextension-API.
 
 ## Installation
 1. Install the [Firefox add-on](https://addons.mozilla.org/en-US/firefox/addon/password-hasher-ng/)
@@ -11,8 +11,8 @@ An updated version of the classic Password Hasher iadd-on compatible with the ne
 2. To open the hasher do one of the following:
   * Click on the password-hasher-icon in the address-field of your browser
   * Use the keyboard-shortcut Ctrl-F6
-  * Click on the "#"-symbol in the password-field
-  * Use the right-click contexctmenu on the password field to open password-hasher
+  * Click on the "#"-symbol in or near the password-field
+  * Use the right-click contextmenu on the password field to open password-hasher
 3. Enter your master-key
 4. Click ok or enter: Done!
 
@@ -35,5 +35,5 @@ site-tag: heise
 master-key: password
 resulting hash: 0"Ajd0PqrldvYjeA
 ```
-Bam. Different passwords for every site. You only have to remeber your master-key which is never stored anywhere.
+Bam. Different passwords for every site. You only have to remember your master-key which is never stored anywhere.
 
