@@ -82,11 +82,6 @@ form {
   width: 20px;
   text-align: right
 }
-.form-group.radio li {
-  display: inline;
-  width: 50px;
-  margin-right: 5px;
-}
 .actions input {
   width: 100px;
 }

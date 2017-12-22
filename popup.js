@@ -16,6 +16,7 @@ function generateConfig(e) {
 
 function listener(m) {
   if(m.action == 'init') {
+    this.document.getElementById("key").focus();
     settings = m.settings;
     tabId = m.tabId;
     port.postMessage({action: 'resetPopup'});
@@ -37,7 +38,6 @@ function listener(m) {
       $('#unmask').removeClass('hidden');
       $('.unmasklabel').removeClass('hidden');
     }
-    $('#key').focus();
     $('#cancel').on('click', function(e){
       window.close();
     });
@@ -62,9 +62,7 @@ function listener(m) {
           $('.settings').show();
           $('#options').val('Options <<');
           if(settings.popup == 1) {
-            browser.windows.getCurrent().then((currentWindow) => {
-              browser.windows.update(currentWindow.id, { height: 400 });
-            });
+            browser.windows.update(browser.windows.WINDOW_ID_CURRENT, { height: 400 });
           }
       }
       else {
@@ -72,9 +70,7 @@ function listener(m) {
         $('.settings').hide();
         $('#options').val('Options >>');
         if(settings.popup == 1) {
-          browser.windows.getCurrent().then((currentWindow) => {
-            browser.windows.update(currentWindow.id, { height: 200 });
-          });
+          browser.windows.update(browser.windows.WINDOW_ID_CURRENT, { height: 200 });
         }
       }
     });
@@ -92,9 +88,9 @@ function listener(m) {
       }
     });
 		$(document).keydown(function(e) {
-				if (e.keyCode == 27) {
-						window.close();
-				}
+				if (e.keyCode == 27 && settings.popup == 1) {
+          browser.windows.remove(browser.windows.WINDOW_ID_CURRENT);
+        }
 		});
     $('form').on('submit', function(e){
       e.preventDefault();
@@ -108,8 +104,12 @@ function listener(m) {
     }); 
   }
   else if(m.action == 'close') {
-    window.close();
+    if(settings.popup == 1) {  
+      browser.windows.remove(browser.windows.WINDOW_ID_CURRENT);
+    }
+    else {
+      this.close();
+    }
   }
 }
-
 port.onMessage.addListener(listener);
