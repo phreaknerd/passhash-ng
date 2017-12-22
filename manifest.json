@@ -42,7 +42,7 @@
   "page_action": {
     "default_title": "Hash password",
     "default_icon": {
-      "48": "icons/logo_bw_48.png"
+      "48": "icons/logo_gr_48.png"
     },
     "default_popup": "popup.html",
     "browser_style": false 

@@ -16,7 +16,7 @@ function generateConfig(e) {
 
 function listener(m) {
   if(m.action == 'init') {
-    this.document.getElementById("key").focus();
+    document.getElementById("key").focus();
     settings = m.settings;
     tabId = m.tabId;
     port.postMessage({action: 'resetPopup'});
