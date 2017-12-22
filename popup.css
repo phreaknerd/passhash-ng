@@ -25,7 +25,7 @@ label {
 
 .row {
   margin-bottom: 5px;
-  width: 420px;
+  width: 435px;
 }
 
 .btn-right {
@@ -45,8 +45,8 @@ label {
   display: none;
 }
 form {
-  padding: 15px;
-  /*width: 420px;*/
+  padding: 15px 0px 0px 15px;
+  width: 435px;
 }
 #hint {
   position: absolute;
@@ -91,16 +91,12 @@ form {
   width: 100px;
 }
 .requirements, .restrictions {
-  width: 275px;
+  width: 300px;
 }
 .col {
-  width: 275px;
+  float: left;
+  width: 300px;
 }
-.col:first-child {
-  float: right;
+.col:last-child {
   width: 120px;
-  margin-right: 15px;
-}
-.col:first-child h2 {
-  margin-top: 0;
 }
