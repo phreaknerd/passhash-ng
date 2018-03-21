@@ -25,7 +25,7 @@ label {
 
 .row {
   margin-bottom: 5px;
-  width: 435px;
+  width: 400px;
 }
 
 .btn-right {
@@ -46,7 +46,7 @@ label {
 }
 form {
   padding: 15px 0px 0px 15px;
-  width: 435px;
+  width: 400px;
 }
 #hint {
   position: absolute;
