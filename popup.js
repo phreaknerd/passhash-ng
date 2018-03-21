@@ -16,11 +16,13 @@ function generateConfig(e) {
 
 function listener(m) {
   if(m.action == 'init') {
-    document.getElementById("key").focus();
     settings = m.settings;
     tabId = m.tabId;
     port.postMessage({action: 'resetPopup'});
     $('#tag').val(settings.tag);
+    setTimeout(function(){
+      $('#key').focus();
+    }, 500);  
     var num = settings.cfg.replace( /^\D+/g, '');
     var elements = document.querySelectorAll("input");
     for(var i = 0, element; element = elements[i]; i++) { 

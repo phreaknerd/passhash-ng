@@ -2,7 +2,7 @@
 
   "manifest_version": 2,
   "name": "Password Hasher NG",
-  "version": "1.0.2beta3",
+  "version": "1.0.2beta4",
 
   "applications": {
     "gecko": {
@@ -51,7 +51,7 @@
   "commands": {
     "_execute_page_action": {
       "suggested_key": {
-        "default": "Ctrl+F6"
+        "default": "Ctrl+Shift+F6"
       }
     }
   }

@@ -10,7 +10,7 @@ An updated version of the classic Password Hasher add-on compatible with the new
 1. Open a login page with a password field
 2. To open the hasher do one of the following:
   * Click on the password-hasher-icon in the address-field of your browser
-  * Use the keyboard-shortcut Ctrl-F6
+  * Use the keyboard-shortcut Ctrl-Shift-F6
   * Click on the "#"-symbol in or near the password-field
   * Use the right-click contextmenu on the password field to open password-hasher
 3. Enter your master-key
