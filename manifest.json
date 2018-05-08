@@ -2,7 +2,7 @@
 
   "manifest_version": 2,
   "name": "Password Hasher NG",
-  "version": "1.0.2",
+  "version": "1.0.3",
 
   "applications": {
     "gecko": {

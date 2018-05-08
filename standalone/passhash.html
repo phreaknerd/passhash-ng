@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <title>Password Hasher NG</title>
+    <meta charset="utf-8">
+    <style>
+html, body {
+  background-color: #fff;
+  font-family: sans-serif;
+  font-size: 14px;
+  color: #000;
+  padding: 10px;
+  margin: 0;
+  padding: 0;
+}
+
+label {
+  width: 100px;
+  display: inline-block;
+}
+
+#tag, #key, #hash {
+  width: 150px;
+  display: inline-block;
+}
+
+#bump, #options, #cancel, #ok {
+  width: 120px;
+  text-align: center;
+}
+#hint {
+  position: absolute;
+  margin: 2px 0px 0px 5px;
+	display: inline-block;
+	color: #666;
+	width: 13px;
+	text-align: center;
+}
+
+.row {
+  margin-bottom: 5px;
+  width: 400px;
+}
+
+.btn-right {
+  clear: both; 
+  padding-left: 100px;
+  padding-top: 10px;
+  width: 250px;
+}
+
+#settings.hidden {
+  display: none;
+}
+form {
+  padding: 15px 0px 0px 15px;
+  width: 400px;
+}
+.hidden {
+  display: none;
+}
+.form-group h2 {
+  font-size: 16px;
+}
+.form-group ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.form-group li {
+  padding:0;
+  margin:0; 
+}
+.form-group label {
+  width: auto;
+}
+.form-group.radio {
+  width: 100px;
+}
+.form-group.radio label {
+  display: inline-block;
+  width: 20px;
+  text-align: right;
+  padding: 0;
+  margin: 0 5px 2px 5px;
+}
+.form-group.radio input {
+  width: 15px;
+  display: inline-block;
+  padding: 0;
+  margin: 0 0 2px 0;
+}
+.actions input {
+  width: 100px;
+}
+.requirements, .restrictions {
+  width: 300px;
+}
+.col {
+  float: left;
+  width: 300px;
+}
+.col:last-child {
+  width: 100px;
+}
+
+</style>
+    <style>
+@-webkit-keyframes a{0%{opacity:0;bottom:-15px;max-height:0;max-width:0;margin-top:0}30%{opacity:.8;bottom:-3px}to{opacity:1;bottom:0;max-height:200px;margin-top:12px;max-width:400px}}@keyframes a{0%{opacity:0;bottom:-15px;max-height:0;max-width:0;margin-top:0}30%{opacity:.8;bottom:-3px}to{opacity:1;bottom:0;max-height:200px;margin-top:12px;max-width:400px}}@-webkit-keyframes b{0%{opacity:1;bottom:0}30%{opacity:.2;bottom:-3px}to{opacity:0;bottom:-15px}}@keyframes b{0%{opacity:1;bottom:0}30%{opacity:.2;bottom:-3px}to{opacity:0;bottom:-15px}}@-webkit-keyframes c{0%{opacity:0}30%{opacity:.5}to{opacity:.6}}@keyframes c{0%{opacity:0}30%{opacity:.5}to{opacity:.6}}@-webkit-keyframes d{0%{opacity:.6}30%{opacity:.1}to{opacity:0}}@keyframes d{0%{opacity:.6}30%{opacity:.1}to{opacity:0}}.notyf__icon--alert,.notyf__icon--confirm{height:21px;width:21px;background:#fff;border-radius:50%;display:block;margin:0 auto;position:relative}.notyf__icon--alert:after,.notyf__icon--alert:before{content:"";background:#ed3d3d;display:block;position:absolute;width:3px;border-radius:3px;left:9px}.notyf__icon--alert:after{height:3px;top:14px}.notyf__icon--alert:before{height:8px;top:4px}.notyf__icon--confirm:after,.notyf__icon--confirm:before{content:"";background:#3dc763;display:block;position:absolute;width:3px;border-radius:3px}.notyf__icon--confirm:after{height:6px;-webkit-transform:rotate(-45deg);transform:rotate(-45deg);top:9px;left:6px}.notyf__icon--confirm:before{height:11px;-webkit-transform:rotate(45deg);transform:rotate(45deg);top:5px;left:10px}.notyf__toast{display:block;overflow:hidden;-webkit-animation:a .3s forwards;animation:a .3s forwards;box-shadow:0 1px 3px 0 rgba(0,0,0,.45);position:relative;padding-right:13px}.notyf__toast.notyf--alert{background:#ed3d3d}.notyf__toast.notyf--confirm{background:#3dc763}.notyf__toast.notyf--disappear{-webkit-animation:b .3s 1 forwards;animation:b .3s 1 forwards;-webkit-animation-delay:.25s;animation-delay:.25s}.notyf__toast.notyf--disappear .notyf__message{opacity:1;-webkit-animation:b .3s 1 forwards;animation:b .3s 1 forwards;-webkit-animation-delay:.1s;animation-delay:.1s}.notyf__toast.notyf--disappear .notyf__icon{opacity:1;-webkit-animation:d .3s 1 forwards;animation:d .3s 1 forwards}.notyf__wrapper{display:table;width:100%;padding-top:20px;padding-bottom:20px;padding-right:15px;border-radius:3px}.notyf__icon{width:20%;text-align:center;font-size:1.3em;-webkit-animation:c .5s forwards;animation:c .5s forwards;-webkit-animation-delay:.25s;animation-delay:.25s}.notyf__icon,.notyf__message{display:table-cell;vertical-align:middle;opacity:0}.notyf__message{width:80%;position:relative;-webkit-animation:a .3s forwards;animation:a .3s forwards;-webkit-animation-delay:.15s;animation-delay:.15s}.notyf{position:fixed;bottom:20px;right:30px;width:20%;color:#fff;z-index:1}@media only screen and (max-width:736px){.notyf__container{width:90%;margin:0 auto;display:block;right:0;left:0}}
+</style>
+    <link rel="icon" type="image/png" href="logo_48.png">
+  </head>
+
+<body>
+  <form autocomplete="off">
+    <div class="row">
+      <div class="col">
+        <div class="row">
+          <label for="tag">Sitetag</label><input type="text" id="tag" value="" autofocus>
+        </div>
+        <div class="row">
+          <label for="key">Masterkey</label><input type="password" id="key" value=""><div id="hint" class="hidden">$$</div>
+        </div>
+        <div class="row">
+          <label for="hash">Hashword</label><input type="text" id="hash" value="" readonly>
+        </div>
+      </div>
+      <div class="col">
+        <div class="row">
+          <input type="button" value="Bump" id="bump" name="bump">      
+        </div>
+        <div class="row">
+          <input type="checkbox" id="unmask" class="hidden"><label id="unmasklabel" class="checkboxlabel hidden" for="unmask">Unmask</label>
+        </div>
+        <div class="row">
+          <input type="button" value="Options >>" id="options">
+        </div>
+      </div>
+    </div>
+    <div id="settings" class="row hidden">
+      <div class="col">
+        <div class="form-group checkboxes requirements">
+          <h2>Requirements</h2>
+          <ul>
+            <li><input type="checkbox" id="d" checked="true" value="d"><label for="d">At least one digit</label></li>
+            <li><input type="checkbox" id="p" checked="true" value="p"><label for="p">At least one punctuation character</label></li>
+            <li><input type="checkbox" id="m" checked="true" value="m"><label for="m">Both upper- and lower-case letters</label></li>
+          </ul>
+        </div>
+        <div class="form-group checkboxes restrictions">
+          <h2>Restrictions</h2>
+          <ul>
+            <li><input type="checkbox" id="r" value="r"><label for="r">No special characters</label></li>
+            <li><input type="checkbox" id="g" value="g"><label for="g">Digits only</label></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col">
+        <div class="form-group radio size">
+          <h2>Size</h2>
+          <ul>
+            <li><input type="radio" name="size" id="size4" value="4"><label for="size4">4</label>
+            <input type="radio" name="size" id="size16" value="16" checked="true"><label for="size16">16</label></li>
+            <li><input type="radio" name="size" id="size6" value="6"><label for="size6">6</label>
+            <input type="radio" name="size" id="size18" value="18"><label for="size18">18</label></li>
+            <li><input type="radio" name="size" id="size8" value="8"><label for="size8">8</label>
+            <input type="radio" name="size" id="size20" value="20"><label for="size20">20</label></li>
+            <li><input type="radio" name="size" id="size10" value="10"><label for="size10">10</label>
+            <input type="radio" name="size" id="size22" value="22"><label for="size22">22</label></li>
+            <li><input type="radio" name="size" id="size12" value="12"><label for="size12">12</label>
+            <input type="radio" name="size" id="size24" value="24"><label for="size24">24</label></li>
+            <li><input type="radio" name="size" id="size14" value="14"><label for="size14">14</label>
+            <input type="radio" name="size" id="size26" value="26"><label for="size26">26</label></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </form>
+  
+  <script>
+/*
+ * A JavaScript implementation of the Secure Hash Algorithm, SHA-1, as defined
+ * in FIPS PUB 180-1
+ * Version 2.1a Copyright Paul Johnston 2000 - 2002.
+ * Other contributors: Greg Holt, Andrew Kepert, Ydnar, Lostinet
+ * Distributed under the BSD License
+ * See http://pajhome.org.uk/crypt/md5 for details.
+ */
+
+/*
+ * Configurable variables. You may need to tweak these to be compatible with
+ * the server-side, but the defaults work in most cases.
+ */
+var hexcase = 0;  /* hex output format. 0 - lowercase; 1 - uppercase        */
+var b64pad  = ""; /* base-64 pad character. "=" for strict RFC compliance   */
+var chrsz   = 8;  /* bits per input character. 8 - ASCII; 16 - Unicode      */
+
+/*
+ * These are the functions you'll usually want to call
+ * They take string arguments and return either hex or base-64 encoded strings
+ */
+function hex_sha1(s){return binb2hex(core_sha1(str2binb(s),s.length * chrsz));}
+function b64_sha1(s){return binb2b64(core_sha1(str2binb(s),s.length * chrsz));}
+function str_sha1(s){return binb2str(core_sha1(str2binb(s),s.length * chrsz));}
+function hex_hmac_sha1(key, data){ return binb2hex(core_hmac_sha1(key, data));}
+function b64_hmac_sha1(key, data){ return binb2b64(core_hmac_sha1(key, data));}
+function str_hmac_sha1(key, data){ return binb2str(core_hmac_sha1(key, data));}
+
+/*
+ * Perform a simple self-test to see if the VM is working
+ */
+function sha1_vm_test()
+{
+  return hex_sha1("abc") == "a9993e364706816aba3e25717850c26c9cd0d89d";
+}
+
+/*
+ * Calculate the SHA-1 of an array of big-endian words, and a bit length
+ */
+function core_sha1(x, len)
+{
+  /* append padding */
+  /* SC - Get rid of warning */
+  var i = (len >> 5);
+  if (x[i] == undefined)
+      x[i]  = 0x80 << (24 - len % 32);
+  else
+      x[i] |= 0x80 << (24 - len % 32);
+  /*x[len >> 5] |= 0x80 << (24 - len % 32);*/
+  x[((len + 64 >> 9) << 4) + 15] = len;
+
+  var w = Array(80);
+  var a =  1732584193;
+  var b = -271733879;
+  var c = -1732584194;
+  var d =  271733878;
+  var e = -1009589776;
+
+  for(var i = 0; i < x.length; i += 16)
+  {
+    var olda = a;
+    var oldb = b;
+    var oldc = c;
+    var oldd = d;
+    var olde = e;
+
+    for(var j = 0; j < 80; j++)
+    {
+      if(j < 16) w[j] = x[i + j];
+      else w[j] = rol(w[j-3] ^ w[j-8] ^ w[j-14] ^ w[j-16], 1);
+      var t = safe_add(safe_add(rol(a, 5), sha1_ft(j, b, c, d)),
+                       safe_add(safe_add(e, w[j]), sha1_kt(j)));
+      e = d;
+      d = c;
+      c = rol(b, 30);
+      b = a;
+      a = t;
+    }
+
+    a = safe_add(a, olda);
+    b = safe_add(b, oldb);
+    c = safe_add(c, oldc);
+    d = safe_add(d, oldd);
+    e = safe_add(e, olde);
+  }
+  return Array(a, b, c, d, e);
+
+}
+
+/*
+ * Perform the appropriate triplet combination function for the current
+ * iteration
+ */
+function sha1_ft(t, b, c, d)
+{
+  if(t < 20) return (b & c) | ((~b) & d);
+  if(t < 40) return b ^ c ^ d;
+  if(t < 60) return (b & c) | (b & d) | (c & d);
+  return b ^ c ^ d;
+}
+
+/*
+ * Determine the appropriate additive constant for the current iteration
+ */
+function sha1_kt(t)
+{
+  return (t < 20) ?  1518500249 : (t < 40) ?  1859775393 :
+         (t < 60) ? -1894007588 : -899497514;
+}
+
+/*
+ * Calculate the HMAC-SHA1 of a key and some data
+ */
+function core_hmac_sha1(key, data)
+{
+  var bkey = str2binb(key);
+  if(bkey.length > 16) bkey = core_sha1(bkey, key.length * chrsz);
+
+  var ipad = Array(16), opad = Array(16);
+  for(var i = 0; i < 16; i++)
+  {
+    /* SC - Get rid of warning */
+    var k = (bkey[i] != undefined ? bkey[i] : 0);
+    ipad[i] = k ^ 0x36363636;
+    opad[i] = k ^ 0x5C5C5C5C;
+/*  ipad[i] = bkey[i] ^ 0x36363636;
+    opad[i] = bkey[i] ^ 0x5C5C5C5C;*/
+  }
+
+  var hash = core_sha1(ipad.concat(str2binb(data)), 512 + data.length * chrsz);
+  return core_sha1(opad.concat(hash), 512 + 160);
+}
+
+/*
+ * Add integers, wrapping at 2^32. This uses 16-bit operations internally
+ * to work around bugs in some JS interpreters.
+ */
+function safe_add(x, y)
+{
+  var lsw = (x & 0xFFFF) + (y & 0xFFFF);
+  var msw = (x >> 16) + (y >> 16) + (lsw >> 16);
+  return (msw << 16) | (lsw & 0xFFFF);
+}
+
+/*
+ * Bitwise rotate a 32-bit number to the left.
+ */
+function rol(num, cnt)
+{
+  return (num << cnt) | (num >>> (32 - cnt));
+}
+
+/*
+ * Convert an 8-bit or 16-bit string to an array of big-endian words
+ * In 8-bit function, characters >255 have their hi-byte silently ignored.
+ */
+function str2binb(str)
+{
+  var bin = Array();
+  var mask = (1 << chrsz) - 1;
+  /* SC - Get rid of warnings */
+  for(var i = 0; i < str.length * chrsz; i += chrsz)
+  {
+    if (bin[i>>5] != undefined)
+      bin[i>>5] |= (str.charCodeAt(i / chrsz) & mask) << (32 - chrsz - i%32);
+    else
+      bin[i>>5]  = (str.charCodeAt(i / chrsz) & mask) << (32 - chrsz - i%32);
+  }
+  /*for(var i = 0; i < str.length * chrsz; i += chrsz)
+      bin[i>>5] |= (str.charCodeAt(i / chrsz) & mask) << (32 - chrsz - i%32);*/
+  return bin;
+}
+
+/*
+ * Convert an array of big-endian words to a string
+ */
+function binb2str(bin)
+{
+  var str = "";
+  var mask = (1 << chrsz) - 1;
+  for(var i = 0; i < bin.length * 32; i += chrsz)
+    str += String.fromCharCode((bin[i>>5] >>> (32 - chrsz - i%32)) & mask);
+  return str;
+}
+
+/*
+ * Convert an array of big-endian words to a hex string.
+ */
+function binb2hex(binarray)
+{
+  var hex_tab = hexcase ? "0123456789ABCDEF" : "0123456789abcdef";
+  var str = "";
+  for(var i = 0; i < binarray.length * 4; i++)
+  {
+    str += hex_tab.charAt((binarray[i>>2] >> ((3 - i%4)*8+4)) & 0xF) +
+           hex_tab.charAt((binarray[i>>2] >> ((3 - i%4)*8  )) & 0xF);
+  }
+  return str;
+}
+
+/*
+ * Convert an array of big-endian words to a base-64 string
+ */
+function binb2b64(binarray)
+{
+  var tab = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+  var str = "";
+  for(var i = 0; i < binarray.length * 4; i += 3)
+  {
+    /* SC - Get rid of warning */
+    var b1 = binarray[i   >> 2] != undefined ? ((binarray[i   >> 2] >> 8 * (3 -  i   %4)) & 0xFF) << 16 : 0;
+    var b2 = binarray[i+1 >> 2] != undefined ? ((binarray[i+1 >> 2] >> 8 * (3 - (i+1)%4)) & 0xFF) << 8  : 0;
+    var b3 = binarray[i+2 >> 2] != undefined ? ((binarray[i+2 >> 2] >> 8 * (3 - (i+2)%4)) & 0xFF)       : 0;
+    var triplet = b1 | b2 | b3;
+    /*var triplet = (((binarray[i   >> 2] >> 8 * (3 -  i   %4)) & 0xFF) << 16)
+                | (((binarray[i+1 >> 2] >> 8 * (3 - (i+1)%4)) & 0xFF) << 8 )
+                |  ((binarray[i+2 >> 2] >> 8 * (3 - (i+2)%4)) & 0xFF);*/
+    for(var j = 0; j < 4; j++)
+    {
+      if(i * 8 + j * 6 > binarray.length * 32) str += b64pad;
+      else str += tab.charAt((triplet >> 6*(3-j)) & 0x3F);
+    }
+  }
+  return str;
+}
+
+</script>
+  <script>
+/* ***** BEGIN LICENSE BLOCK *****
+ * Version: MPL 1.1/GPL 2.0/LGPL 2.1
+ *
+ * The contents of this file are subject to the Mozilla Public License Version
+ * 1.1 (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.mozilla.org/MPL/
+ *
+ * Software distributed under the License is distributed on an "AS IS" basis,
+ * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License
+ * for the specific language governing rights and limitations under the
+ * License.
+ *
+ * The Original Code is Password Hasher
+ *
+ * The Initial Developer of the Original Code is Steve Cooper.
+ * Portions created by the Initial Developer are Copyright (C) 2006
+ * the Initial Developer. All Rights Reserved.
+ *
+ * Contributor(s): (none)
+ *
+ * Alternatively, the contents of this file may be used under the terms of
+ * either the GNU General Public License Version 2 or later (the "GPL"), or
+ * the GNU Lesser General Public License Version 2.1 or later (the "LGPL"),
+ * in which case the provisions of the GPL or the LGPL are applicable instead
+ * of those above. If you wish to allow use of your version of this file only
+ * under the terms of either the GPL or the LGPL, and not to allow others to
+ * use your version of this file under the terms of the MPL, indicate your
+ * decision by deleting the provisions above and replace them with the notice
+ * and other provisions required by the GPL or the LGPL. If you do not delete
+ * the provisions above, a recipient may use your version of this file under
+ * the terms of any one of the MPL, the GPL or the LGPL.
+ *
+ * ***** END LICENSE BLOCK ***** */
+
+var PassHashCommon =
+{
+    getDomain: function(input)
+    {
+        var h = input.split(".");
+        if (h.length <= 1)
+            return null;
+        // Handle domains like co.uk
+        if (h.length > 2 && h[h.length-1].length == 2 && h[h.length-2] == "co")
+            return h[h.length-3] + '.' + h[h.length-2] + '.' + h[h.length-1];
+        return h[h.length-2] + '.' + h[h.length-1];
+    },
+
+    // IMPORTANT: This function should be changed carefully.  It must be
+    // completely deterministic and consistent between releases.  Otherwise
+    // users would be forced to update their passwords.  In other words, the
+    // algorithm must always be backward-compatible.  It's only acceptable to
+    // violate backward compatibility when new options are used.
+    // SECURITY: The optional adjustments are positioned and calculated based
+    // on the sum of all character codes in the raw hash string.  So it becomes
+    // far more difficult to guess the injected special characters without
+    // knowing the master key.
+    // TODO: Is it ok to assume ASCII is ok for adjustments?
+    generateHashWord: function(
+                siteTag,
+                masterKey,
+                hashWordSize,
+                requireDigit,
+                requirePunctuation,
+                requireMixedCase,
+                restrictSpecial,
+                restrictDigits)
+    {
+        // Start with the SHA1-encrypted master key/site tag.
+        var s = b64_hmac_sha1(masterKey, siteTag);
+        // Use the checksum of all characters as a pseudo-randomizing seed to
+        // avoid making the injected characters easy to guess.  Note that it
+        // isn't random in the sense of not being deterministic (i.e.
+        // repeatable).  Must share the same seed between all injected
+        // characters so that they are guaranteed unique positions based on
+        // their offsets.
+        var sum = 0;
+        for (var i = 0; i < s.length; i++)
+            sum += s.charCodeAt(i);
+        // Restrict digits just does a mod 10 of all the characters
+        if (restrictDigits)
+            s = PassHashCommon.convertToDigits(s, sum, hashWordSize);
+        else
+        {
+            // Inject digit, punctuation, and mixed case as needed.
+            if (requireDigit)
+                s = PassHashCommon.injectSpecialCharacter(s, 0, 4, sum, hashWordSize, 48, 10);
+            if (requirePunctuation && !restrictSpecial)
+                s = PassHashCommon.injectSpecialCharacter(s, 1, 4, sum, hashWordSize, 33, 15);
+            if (requireMixedCase)
+            {
+                s = PassHashCommon.injectSpecialCharacter(s, 2, 4, sum, hashWordSize, 65, 26);
+                s = PassHashCommon.injectSpecialCharacter(s, 3, 4, sum, hashWordSize, 97, 26);
+            }
+            // Strip out special characters as needed.
+            if (restrictSpecial)
+                s = PassHashCommon.removeSpecialCharacters(s, sum, hashWordSize);
+        }
+        // Trim it to size.
+        return s.substr(0, hashWordSize);
+    },
+
+    // This is a very specialized method to inject a character chosen from a
+    // range of character codes into a block at the front of a string if one of
+    // those characters is not already present.
+    // Parameters:
+    //  sInput   = input string
+    //  offset   = offset for position of injected character
+    //  reserved = # of offsets reserved for special characters
+    //  seed     = seed for pseudo-randomizing the position and injected character
+    //  lenOut   = length of head of string that will eventually survive truncation.
+    //  cStart   = character code for first valid injected character.
+    //  cNum     = number of valid character codes starting from cStart.
+    injectSpecialCharacter: function(sInput, offset, reserved, seed, lenOut, cStart, cNum)
+    {
+        var pos0 = seed % lenOut;
+        var pos = (pos0 + offset) % lenOut;
+        // Check if a qualified character is already present
+        // Write the loop so that the reserved block is ignored.
+        for (var i = 0; i < lenOut - reserved; i++)
+        {
+            var i2 = (pos0 + reserved + i) % lenOut
+            var c = sInput.charCodeAt(i2);
+            if (c >= cStart && c < cStart + cNum)
+                return sInput;  // Already present - nothing to do
+        }
+        var sHead   = (pos > 0 ? sInput.substring(0, pos) : "");
+        var sInject = String.fromCharCode(((seed + sInput.charCodeAt(pos)) % cNum) + cStart);
+        var sTail   = (pos + 1 < sInput.length ? sInput.substring(pos+1, sInput.length) : "");
+        return (sHead + sInject + sTail);
+    },
+
+    // Another specialized method to replace a class of character, e.g.
+    // punctuation, with plain letters and numbers.
+    // Parameters:
+    //  sInput = input string
+    //  seed   = seed for pseudo-randomizing the position and injected character
+    //  lenOut = length of head of string that will eventually survive truncation.
+    removeSpecialCharacters: function(sInput, seed, lenOut)
+    {
+        var s = '';
+        var i = 0;
+        while (i < lenOut)
+        {
+            var j = sInput.substring(i).search(/[^a-z0-9]/i);
+            if (j < 0)
+                break;
+            if (j > 0)
+                s += sInput.substring(i, i + j);
+            s += String.fromCharCode((seed + i) % 26 + 65);
+            i += (j + 1);
+        }
+        if (i < sInput.length)
+            s += sInput.substring(i);
+        return s;
+    },
+
+    // Convert input string to digits-only.
+    // Parameters:
+    //  sInput = input string
+    //  seed   = seed for pseudo-randomizing the position and injected character
+    //  lenOut = length of head of string that will eventually survive truncation.
+    convertToDigits: function(sInput, seed, lenOut)
+    {
+        var s = '';
+        var i = 0;
+        while (i < lenOut)
+        {
+            var j = sInput.substring(i).search(/[^0-9]/i);
+            if (j < 0)
+                break;
+            if (j > 0)
+                s += sInput.substring(i, i + j);
+            s += String.fromCharCode((seed + sInput.charCodeAt(i)) % 10 + 48);
+            i += (j + 1);
+        }
+        if (i < sInput.length)
+            s += sInput.substring(i);
+        return s;
+    },
+
+    bumpSiteTag: function(siteTag)
+    {
+        var tag = siteTag.replace(/^[ \t]*(.*)[ \t]*$/, "$1");    // redundant
+        if (tag)
+        {
+            var splitTag = tag.match(/^(.*):([0-9]+)?$/);
+            if (splitTag == null || splitTag.length < 3)
+                tag += ":1";
+            else
+                tag = splitTag[1] + ":" + (parseInt(splitTag[2]) + 1);
+        }
+        return tag;
+    },
+
+    // Returns true if an HTML node is some kind of text field.
+    isTextNode: function(node)
+    {
+        try
+        {
+            var name = node.localName.toUpperCase();
+            if (name == "TEXTAREA" || name == "TEXTBOX" ||
+                        (name == "INPUT" &&
+                            (node.type == "text" || node.type == "password")))
+                return true;
+        }
+        catch(e) {}
+        return false;
+    }
+}
+
+</script>
+  <script>
+!function(){function n(n,t){for(property in t)t.hasOwnProperty(property)&&(n[property]=t[property]);return n}function t(n,t){var e=document.createElement("div");e.className="notyf__toast";var o=document.createElement("div");o.className="notyf__wrapper";var i=document.createElement("div");i.className="notyf__icon";var a=document.createElement("i");a.className=t;var r=document.createElement("div");r.className="notyf__message",r.innerHTML=n,i.appendChild(a),o.appendChild(i),o.appendChild(r),e.appendChild(o);var c=this;return setTimeout(function(){e.className+=" notyf--disappear",e.addEventListener(c.animationEnd,function(n){n.target==e&&c.container.removeChild(e)});var n=c.notifications.indexOf(e);c.notifications.splice(n,1)},c.options.delay),e}function e(){var n,t=document.createElement("fake"),e={transition:"animationend",OTransition:"oAnimationEnd",MozTransition:"animationend",WebkitTransition:"webkitAnimationEnd"};for(n in e)if(void 0!==t.style[n])return e[n]}this.Notyf=function(){this.notifications=[];var t={delay:2e3,alertIcon:"notyf__icon--alert",confirmIcon:"notyf__icon--confirm"};arguments[0]&&"object"==typeof arguments[0]?this.options=n(t,arguments[0]):this.options=t;var o=document.createDocumentFragment(),i=document.createElement("div");i.className="notyf",o.appendChild(i),document.body.appendChild(o),this.container=i,this.animationEnd=e()},this.Notyf.prototype.alert=function(n){var e=t.call(this,n,this.options.alertIcon);e.className+=" notyf--alert",this.container.appendChild(e),this.notifications.push(e)},this.Notyf.prototype.confirm=function(n){var e=t.call(this,n,this.options.confirmIcon);e.className+=" notyf--confirm",this.container.appendChild(e),this.notifications.push(e)}}(),function(){"function"==typeof define&&define.amd?define("Notyf",function(){return Notyf}):"undefined"!=typeof module&&module.exports?module.exports=Notyf:window.Notyf=Notyf}();
+</script>
+  <script>
+(function(){
+  var settings;
+  
+  var inputs = document.querySelectorAll("input")
+  var hash = document.getElementById("hash")
+  var key = document.querySelector("#key")
+  var tag = document.querySelector("#tag")
+  var unmask = document.querySelector("#unmask")
+  var unmasklabel = document.querySelector("#unmasklabel")
+  var settings = document.querySelector("#settings")
+  var options = document.querySelector("#options")
+  var bump = document.querySelector("#bump")
+  var hint = document.querySelector("#hint")
+  
+  function generateConfig(e) {
+    var cfg = '';
+    var elements = document.querySelectorAll("input");
+    for(var i = 0, element; element = elements[i]; i++) {
+      if(element.checked === true && element.id != 'unmask'){
+        cfg += element.value;
+      }
+    }
+    return cfg;
+  }
+  
+  
+  var notyf = new Notyf();
+  function copyTextToClipboard() {
+    if(!hash.value.length){
+      return
+    }
+    // hash.select();
+    if( document.execCommand('copy') ){
+      notyf.confirm('Password copied to clipboard');
+    }
+    else{
+      notyf.confirm('Unable to copy password to clipboard, press CTRL+C manually');
+    }
+  }
+
+  function main() {
+    
+    var cfg = generateConfig()
+    
+    var num = cfg.replace( /^\D+/g, '');
+    var elements = document.querySelectorAll("input");
+    for(var i = 0, element; element = elements[i]; i++) { 
+      if(typeof element.type !== 'undefined' && element.type == 'radio') {
+        element.checked = element.value == num ? true : false;
+      }
+      else if (typeof element.type !== 'undefined' && element.type == 'checkbox' && element.id != 'unmask') {
+        element.checked = cfg.indexOf(element.value) != -1 ? true : false;
+      }
+    }
+    
+    unmask.classList.remove('hidden');
+    unmasklabel.classList.remove('hidden');
+    
+    bump.addEventListener('click', function(e){
+      tag.value = PassHashCommon.bumpSiteTag(tag.value);
+      hashChange()
+    });
+    unmask.addEventListener('click', function(e){
+      if(this.checked) {
+        key.setAttribute('type', 'text');
+      }
+      else {
+        key.setAttribute('type', 'password');
+      }
+    });
+    options.addEventListener('click', function(e){
+      if(settings.classList.contains('hidden')){
+        settings.classList.remove('hidden');
+        options.value = 'Options <<';
+      }
+      else {
+        settings.classList.add('hidden');
+        options.value = 'Options >>';
+      }
+    });
+    
+    function hashChange(e){
+      var cfg = generateConfig();
+      var hashWordSize = cfg.replace( /^\D+/g, '');
+      var requireDigit = ( cfg.indexOf('d') != -1 ? true : false );
+      var requirePunctuation = ( cfg.indexOf('p') != -1 ? true : false );
+      var requireMixedCase = ( cfg.indexOf('m') != -1 ? true : false );
+      var restrictSpecial = ( cfg.indexOf('r') != -1 ? true : false ); 
+      var restrictDigits = ( cfg.indexOf('g') != -1 ? true : false );
+      var hashValue = ''
+      var hintValue = '$$'
+      if(key.value && tag.value) {
+        hashValue = PassHashCommon.generateHashWord(tag.value, key.value, hashWordSize, requireDigit, requirePunctuation, requireMixedCase, restrictSpecial, restrictDigits);
+      }
+      if(key.value) {
+        hintValue = PassHashCommon.generateHashWord(key.value, key.value, 2, true, false, true, false, false);
+      }
+      hint.innerText = hintValue
+      hash.value = hashValue
+    }
+    function selectAll(){
+      this.setSelectionRange(0, this.value.length)
+    }
+    
+    Array.from(inputs).forEach(function(input){      
+      input.addEventListener('input', hashChange);
+      input.addEventListener('change', hashChange);
+    })
+    
+    hash.addEventListener('click', selectAll)
+    hash.addEventListener('focus', selectAll)
+    
+    hash.addEventListener('focus', copyTextToClipboard);
+    
+    setTimeout(function(){
+      document.querySelector('.pwdbtn').remove()
+    },1000)
+  }
+
+  main()
+
+})()
+
+</script>
+</body>
+
+</html>

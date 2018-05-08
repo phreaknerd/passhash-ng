@@ -64,7 +64,7 @@ function listener(m) {
           $('.settings').show();
           $('#options').val('Options <<');
           if(settings.popup == 1) {
-            browser.windows.update(browser.windows.WINDOW_ID_CURRENT, { height: 400 });
+            browser.windows.update(browser.windows.WINDOW_ID_CURRENT, { height: 450 });
           }
       }
       else {
