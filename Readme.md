@@ -6,6 +6,9 @@ An updated version of the classic Password Hasher add-on compatible with the new
 1. Install the [Firefox add-on](https://addons.mozilla.org/en-US/firefox/addon/password-hasher-ng/)
 2. Check the global add-on-settings
 
+## Standalone version
+Included in this release is a standalone-html-version of the hasher based on the work of https://github.com/redcatjs/passhash-ng-html
+
 ## Usage
 1. Open a login page with a password field
 2. To open the hasher do one of the following:
